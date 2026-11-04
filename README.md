@@ -42,10 +42,6 @@ For a short end-to-end check, replace `paper` with `validation` in both shell
 commands and MATLAB paths. This reduced model/horizon is not paper-scale evidence.
 The MATLAB renderer exports separate PNG/PDF files without top titles or panel letters.
 
-# Previous CCGrid revision
-
-See [revision changes and commands](docs/CCGRID_REVISION.md) for the corrected simulator, fresh validation workflow, evidence limits, and MATLAB rendering. Existing behavior results below are legacy synthetic diagnostics.
-
 # STG-DDQN: Mobility-Aware SFC Continuity
 
 This package implements the paper **Mobility-Aware Service Function Chain Continuity in Vehicular Fog-Edge Networks**. It is a clean replacement for the earlier security-aware SM-SFC simulator; the two models and their results must not be mixed.
