@@ -1,0 +1,82 @@
+extends: default.yaml
+
+# Executable synthetic behavior-validation profile.  It is intentionally more
+# demanding than smoke.yaml and is used to verify curve direction, policy
+# separation, migration accounting, and scalability before the final SUMO run.
+# It is not a substitute for the ten-seed paper.yaml results.
+
+simulation:
+  warmup_s: 15
+  measurement_s: 90
+  control_period_s: 5
+  seeds: [31, 47, 73]
+  record_requests: true
+
+network:
+  nodes: 12
+  physical_links: 19
+  area_m: [1200, 800]
+  coverage_radius_m: 330
+  cpu_capacity: [65, 95]
+  processing_rate_mi_per_ms: [30, 60]
+  link_bandwidth_mb_s: [70, 95]
+
+mobility:
+  mode: synthetic
+  maximum_vehicles: 120
+  minimum_speed_m_s: 5
+  maximum_speed_m_s: 30
+  synthetic_turn_probability: 0.02
+
+traffic:
+  arrival_rate_req_s: 0.65
+  sfc_length: [3, 5]
+  cpu_requirement: [6, 14]
+  workload_mi: [250, 750]
+  bandwidth_mb_s: [5, 18]
+  latency_requirement_ms: [70, 210]
+  service_lifetime_s: [20, 55]
+  vnf_image_mb: [40, 120]
+
+migration:
+  maximum_bandwidth_mb_s: 25
+  cutover_downtime_ms: 80
+  volume_normalizer_mb: 625
+
+candidates:
+  hop_cutoff: 3
+  paths_per_endpoint: 2
+  maximum_actions: 12
+
+state:
+  history_window: 3
+  maximum_sfc_length: 5
+
+learning:
+  graph_layers: 1
+  temporal_layers: 1
+  attention_heads: 4
+  embedding_dimension: 32
+  feedforward_dimension: 64
+  q_hidden_layers: 2
+  q_hidden_dimension: 64
+  learning_rate: 0.0003
+  replay_capacity: 5000
+  replay_warmup: 32
+  batch_size: 32
+  epsilon_minimum: 0.05
+  epsilon_decay: 0.999
+  training_episodes: 10
+
+baselines:
+  im_latency_trigger_ratio: 0.80
+  dlapm_improvement_threshold: 0.02
+
+experiments:
+  algorithms: [stg_ddqn, im, dlapm]
+  traffic_arrival_rates: [0.25, 0.45, 0.65, 0.85, 1.05, 1.25]
+  traffic_fixed_maximum_speed_m_s: 30
+  mobility_speeds_m_s: [10, 20, 30, 40, 50]
+  mobility_fixed_arrival_rate_req_s: 0.65
+  scalability_nodes: [8, 12, 16, 24]
+  checkpoint: ../checkpoints/behavior_stg_ddqn.pt

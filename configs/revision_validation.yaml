@@ -1,0 +1,15 @@
+extends: behavior.yaml
+
+# Synthetic diagnostics only. The updated state requires fresh training.
+simulation:
+  audit_temporary_blocking: true
+
+learning:
+  device: cpu
+
+experiments:
+  checkpoint: ../checkpoints/revision_stg_ddqn.pt
+
+candidates:
+  # Reproducible work budget; exhausted search is not proven infeasibility.
+  maximum_fallback_paths: 500

@@ -1,0 +1,27 @@
+extends: default.yaml
+
+simulation:
+  warmup_s: 600
+  measurement_s: 3600
+  seeds: [101, 202, 303, 404, 505, 606, 707, 808, 909, 1010]
+
+mobility:
+  mode: sumo_csv
+  sumo_csv: ../data/mobility/sumo_trace.csv
+  # Generate each trace with SUMO under its stated speed restriction.
+  # These files are required inputs, not bundled or fabricated traces.
+  sumo_csv_by_speed:
+    10: ../data/mobility/sumo_10.csv
+    20: ../data/mobility/sumo_20.csv
+    30: ../data/mobility/sumo_trace.csv
+    40: ../data/mobility/sumo_40.csv
+    50: ../data/mobility/sumo_50.csv
+
+experiments:
+  algorithms: [stg_ddqn, im, dlapm]
+  checkpoint: ../checkpoints/stg_ddqn.pt
+
+candidates:
+  # Report budget exhaustion separately and remove the no-false-blocking claim.
+  maximum_fallback_paths: 500
+

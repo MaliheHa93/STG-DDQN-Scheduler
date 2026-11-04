@@ -1,0 +1,33 @@
+extends: paper.yaml
+
+# Paper-sized protocol. Generate the SUMO inputs before training/evaluation.
+simulation:
+  audit_temporary_blocking: true
+
+mobility:
+  mode: sumo_csv
+  sumo_csv: null
+  sumo_csv_by_speed: {}
+  sumo_trace_pattern: ../data/sumo/paper/speed_{speed}/seed_{seed}/trace.csv
+  evaluation_trace_seeds: [101, 202, 303, 404, 505, 606, 707, 808, 909, 1010]
+  training_trace_seeds: [10001, 20001, 30001]
+  sumo_preroll_s: 120
+  sumo_departure_period_s: 0.3
+  dwell_estimator: ray_circle
+
+baselines:
+  im_latency_trigger_ratio: 0.90
+  dlapm_improvement_threshold: 0.05
+
+learning:
+  # CPU permits scatter-reduce graph attention on every supported host.
+  device: cpu
+
+candidates:
+  # New extended scalability control, shared by all schemes. Counts partial
+  # placement trials across preliminary construction AND fallback per decision.
+  # This is an approximation: unexplored feasible candidates may be omitted.
+  maximum_assignment_nodes: 4096
+
+experiments:
+  checkpoint: ../checkpoints/sumo_stg_ddqn.pt

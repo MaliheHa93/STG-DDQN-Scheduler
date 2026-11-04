@@ -1,0 +1,28 @@
+extends: sumo_paper.yaml
+
+# Short integration validation. These are NOT paper-scale experimental results.
+simulation:
+  warmup_s: 10
+  measurement_s: 80
+  seeds: [101, 202, 303]
+
+mobility:
+  sumo_trace_pattern: ../data/sumo/validation/speed_{speed}/seed_{seed}/trace.csv
+  evaluation_trace_seeds: [101, 202, 303]
+  training_trace_seeds: [10001, 20001, 30001]
+  sumo_preroll_s: 60
+
+learning:
+  graph_layers: 1
+  temporal_layers: 1
+  embedding_dimension: 32
+  feedforward_dimension: 64
+  q_hidden_layers: 2
+  q_hidden_dimension: 64
+  replay_capacity: 512
+  replay_warmup: 16
+  batch_size: 16
+  training_episodes: 3
+
+experiments:
+  checkpoint: ../checkpoints/sumo_validation_stg_ddqn.pt

@@ -1,0 +1,116 @@
+schema_version: 2
+
+simulation:
+  epoch_s: 1.0
+  warmup_s: 60
+  measurement_s: 600
+  control_period_s: 5
+  seeds: [101, 202, 303]
+  topology_structure_seed: 47
+  record_requests: true
+  audit_temporary_blocking: false
+
+network:
+  nodes: 24
+  physical_links: 43
+  area_m: [2400, 1600]
+  coverage_radius_m: 350
+  cpu_capacity: [65, 95]
+  processing_rate_mi_per_ms: [30, 60]
+  link_bandwidth_mb_s: [105, 135]
+  propagation_delay_ms: [0.8, 1.2]
+  wireless_delay_ms: 2.0
+  topology_nodes_csv: null
+  topology_links_csv: null
+
+mobility:
+  mode: synthetic
+  sumo_csv: null
+  maximum_vehicles: 300
+  maximum_speed_m_s: 30
+  minimum_speed_m_s: 3
+  dwell_clip_s: 60
+  dwell_estimator: ray_circle
+  synthetic_turn_probability: 0.01
+
+traffic:
+  arrival_model: poisson
+  mmpp:
+    low_factor: 0.25
+    high_factor: 2.5
+    high_duration_s: 10
+  arrival_rate_req_s: 0.4
+  sfc_length: [3, 6]
+  cpu_requirement: [5, 15]
+  workload_mi: [300, 900]
+  bandwidth_mb_s: [5, 20]
+  latency_requirement_ms: [80, 250]
+  service_lifetime_s: [30, 120]
+  vnf_image_mb: [50, 200]
+  runtime_state_mb: 5
+
+migration:
+  maximum_bandwidth_mb_s: 20
+  cutover_downtime_ms: 100
+  volume_normalizer_mb: 1230
+  downtime_normalizer_ms: 1000
+
+candidates:
+  hop_cutoff: 4
+  paths_per_endpoint: 3
+  maximum_actions: 32
+  preserve_retain: true
+  complete_fallback: true
+  maximum_fallback_paths: null
+  maximum_assignment_nodes: null
+
+state:
+  history_window: 5
+  maximum_sfc_length: 6
+  minmax_clip: true
+
+learning:
+  graph_layers: 3
+  temporal_layers: 3
+  attention_heads: 8
+  embedding_dimension: 128
+  feedforward_dimension: 512
+  q_hidden_layers: 5
+  q_hidden_dimension: 256
+  activation: relu
+  optimizer: adam
+  loss: huber
+  huber_delta: 1.0
+  learning_rate: 0.00003
+  gamma: 0.95
+  replay_capacity: 1000000
+  replay_warmup: 256
+  batch_size: 256
+  updates_per_decision: 1
+  epsilon_start: 1.0
+  epsilon_minimum: 0.1
+  epsilon_decay: 0.99995
+  evaluation_epsilon: 0.0
+  soft_update_factor: 0.001
+  gradient_clip_norm: 5.0
+  training_episodes: 15
+  device: auto
+
+reward:
+  latency: 0.35
+  lifetime_benefit: 0.25
+  migration_volume: 0.25
+  downtime: 0.15
+
+baselines:
+  im_latency_trigger_ratio: 0.90
+  dlapm_improvement_threshold: 0.05
+
+experiments:
+  algorithms: [stg_ddqn, im, dlapm]
+  traffic_arrival_rates: [0.1, 0.2, 0.4, 0.6, 0.8, 1.0]
+  traffic_fixed_maximum_speed_m_s: 30
+  mobility_speeds_m_s: [10, 20, 30, 40, 50]
+  mobility_fixed_arrival_rate_req_s: 0.4
+  scalability_nodes: [12, 24, 48, 96]
+  checkpoint: ../checkpoints/stg_ddqn.pt

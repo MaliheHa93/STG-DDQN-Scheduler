@@ -1,0 +1,10 @@
+extends: sumo_paper.yaml
+
+# Uncapped reference for search-quality comparisons. Can be very expensive.
+# Use a separate result directory and retrain for a controlled policy comparison.
+candidates:
+  maximum_fallback_paths: null
+  maximum_assignment_nodes: null
+
+experiments:
+  checkpoint: ../checkpoints/sumo_reference_stg_ddqn.pt

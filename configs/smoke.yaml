@@ -1,0 +1,52 @@
+extends: default.yaml
+
+simulation:
+  warmup_s: 5
+  measurement_s: 25
+  seeds: [11]
+  control_period_s: 5
+  record_requests: true
+
+network:
+  nodes: 8
+  physical_links: 11
+  area_m: [800, 600]
+  coverage_radius_m: 350
+
+mobility:
+  maximum_vehicles: 24
+  maximum_speed_m_s: 20
+
+traffic:
+  arrival_rate_req_s: 0.25
+  sfc_length: [3, 4]
+  service_lifetime_s: [6, 12]
+
+candidates:
+  hop_cutoff: 3
+  paths_per_endpoint: 2
+  maximum_actions: 12
+
+state:
+  history_window: 3
+  maximum_sfc_length: 4
+
+learning:
+  graph_layers: 1
+  temporal_layers: 1
+  attention_heads: 2
+  embedding_dimension: 32
+  feedforward_dimension: 64
+  q_hidden_layers: 2
+  q_hidden_dimension: 64
+  replay_capacity: 512
+  replay_warmup: 8
+  batch_size: 8
+  training_episodes: 1
+
+experiments:
+  algorithms: [delay_greedy, im, dlapm]
+  traffic_arrival_rates: [0.15, 0.35]
+  mobility_speeds_m_s: [10, 25]
+  scalability_nodes: [8, 12]
+  checkpoint: null
